@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/ubuntuurl/catkin_ws/aeva-speed-plot/devel/setup.sh

@@ -1,0 +1,8 @@
+prefix=/home/ubuntuurl/catkin_ws/aeva-speed-plot/install
+
+Name: speed_plot
+Description: Description of speed_plot
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: pcl_ros roscpp sensor_msgs std_msgs tf

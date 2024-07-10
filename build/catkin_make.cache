@@ -1,0 +1,2 @@
+speed_plot
+-DCATKIN_DEVEL_PREFIX=/home/ubuntuurl/catkin_ws/aeva-speed-plot/devel -DCMAKE_INSTALL_PREFIX=/home/ubuntuurl/catkin_ws/aeva-speed-plot/install -G Unix Makefiles
