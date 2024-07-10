@@ -6,14 +6,17 @@
 #include "ros/ros.h"
 #include "sensor_msgs/PointCloud2.h"
 #include "std_msgs/String.h"
+#include "std_msgs/Float32.h"
+#include "geometry_msgs/Point.h"
 #include <cmath>
 #include <bitset>
 
 using namespace std;
 
-ros::Publisher dynamic_points;
+ros::Publisher publish_moving;
 
-float bintofloat(int num, const unsigned char* ints) {
+float bintofloat(int num, const unsigned char* ints)
+{
     ostringstream stream;
     string s;
     uint32_t temp_val;
@@ -34,6 +37,14 @@ float bintofloat(int num, const unsigned char* ints) {
     
     return f;
 }
+
+void pubfloat32(float f)
+{
+    std_msgs::Float32 msg;
+    msg.data = f;
+    publish_moving.publish(msg);
+}
+
 
 void readCallback(const sensor_msgs::PointCloud2::ConstPtr& msg)
 {
@@ -86,6 +97,7 @@ void readCallback(const sensor_msgs::PointCloud2::ConstPtr& msg)
         y[j] = bintofloat(4, &(msg->data[j*_point_step + y_offset]));
         z[j] = bintofloat(4, &(msg->data[j*_point_step + z_offset]));
         vel[j] = bintofloat(4, &(msg->data[j*_point_step + vel_offset]));
+        pubfloat32(vel[j]);
         cout << x[j] << ' ' << y[j] << ' ' << z[j] << ' ' << vel[j] << endl;
 
         if(msg->header.stamp.nsec != nsec){
@@ -94,11 +106,14 @@ void readCallback(const sensor_msgs::PointCloud2::ConstPtr& msg)
     }
 }
 
+
 int main(int argc, char** argv)
 {
     ros::init(argc, argv, "getxyzv");
     ros::NodeHandle nh;
+    publish_moving = nh.advertise<std_msgs::Float32>("dynamic/vels", 1000);
     ros::Subscriber sub = nh.subscribe<sensor_msgs::PointCloud2>("aeva/points", 5000, readCallback);
+
     ros::spin();
     return 0;
 }
