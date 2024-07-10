@@ -11,6 +11,7 @@
 
 using namespace std;
 
+ros::Publisher dynamic_points;
 
 float bintofloat(int num, const unsigned char* ints) {
     ostringstream stream;
