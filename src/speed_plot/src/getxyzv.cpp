@@ -10,8 +10,9 @@
 #include "std_msgs/Float32.h"
 #include "geometry_msgs/Point.h"
 #include <cmath>
-
 #include "speed_plot/getxyzv.hpp"
+
+#define TOGGLE_COUT false
 
 ros::Publisher publish_moving;
 
@@ -37,74 +38,33 @@ void coutminmax(float nums[], int n)
 
 void readCallback(const sensor_msgs::PointCloud2::ConstPtr& msg)
 {
+    int _width = msg->width;
 
     pcl::PointCloud<AevaPointXYZIRT> pl_orig;
     pcl::fromROSMsg(*msg, pl_orig);
-
-    std::cout<<"velocity : "<<pl_orig.points[0].velocity<<std::endl;
-
-
-    int _width = msg->width;                         // Width of data array
-    int _height = msg->height;                       // Height of data array
-    int _point_step = msg->point_step;               // Length of one point in bytes (= number of entries?)
-    int _row_step = msg->row_step;                   // Length of one row in bytes
-    bool _is_dense = msg->is_dense;                   // True if there are no invalid points
-
-    float nsec;
-    std::vector<sensor_msgs::PointField_<std::allocator<void> > > myvector (4);
-    int x_offset;
-    int y_offset;
-    int z_offset;
-    int vel_offset;
-
-    /*
-    x: FLOAT32
-    y: FLOAT32
-    z: FLOAT32
-    intensity: FLOAT32
-    reflectivity: FLOAT32
-    velocity: FLOAT32
-    time_offset_ns: INT32
-    line_index: UINT8
-    */
-
-    // Print out time of scan
-    //cout << msg->header.stamp.sec << '.' << msg->header.stamp.nsec << endl;
-    nsec = msg->header.stamp.nsec;
     
-    // Get offsets
-    myvector = msg->fields;
-    x_offset = myvector[0].offset;
-    y_offset = myvector[1].offset;
-    z_offset = myvector[2].offset;
-    vel_offset = myvector[4].offset;
-
-    // Allocate data arrays
+    // Collate x,y,z,vels
     float x[_width];
     float y[_width];
     float z[_width];
     float vel[_width];
 
-    // For each row (scan)
-    for(int j = 0; j <_width; j++){
-        // Convert to floats
-        x[j] = bintofloat(4, &(msg->data[j*_point_step + x_offset]));
-        y[j] = bintofloat(4, &(msg->data[j*_point_step + y_offset]));
-        z[j] = bintofloat(4, &(msg->data[j*_point_step + z_offset]));
-        vel[j] = bintofloat(4, &(msg->data[j*_point_step + vel_offset]));
-        pubfloat32(vel[j]);
-        //cout << x[j] << ' ' << y[j] << ' ' << z[j] << ' ' << vel[j] << endl;
-
-        if(msg->header.stamp.nsec != nsec){
-            cout << "!!!" << msg->header.stamp.sec << '.' << msg->header.stamp.nsec << endl;
-        }
+    for(int i=0; i<_width; i++){
+        x[i] = pl_orig.points[i].x;
+        y[i] = pl_orig.points[i].y;
+        z[i] = pl_orig.points[i].z;
+        vel[i] = pl_orig.points[i].velocity;
+        pubfloat32(vel[i]);
     }
-    // Find min and max vels for each row
-    coutminmax(x, _width);
-    coutminmax(y, _width);
-    coutminmax(z, _width);
-    coutminmax(vel, _width);
-    cout << endl;
+
+    if(TOGGLE_COUT){
+        // Find min and max vels for each row
+        coutminmax(x, _width);
+        coutminmax(y, _width);
+        coutminmax(z, _width);
+        coutminmax(vel, _width);
+        cout << endl;    
+    }
 }
 
 

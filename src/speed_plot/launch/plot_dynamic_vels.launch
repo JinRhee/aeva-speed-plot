@@ -1,0 +1,5 @@
+<launch>
+<node type="getxyzv" name="getxyzv" pkg="speed_plot" output="screen"/>
+<node type="plothistogram" name="plothistogram" pkg="speed_plot" output="screen">
+</node>
+</launch>
