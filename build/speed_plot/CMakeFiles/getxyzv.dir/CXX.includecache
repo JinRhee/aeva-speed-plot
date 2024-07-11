@@ -6,6 +6,18 @@
 
 #IncludeRegexTransform: 
 
+/home/ubuntuurl/catkin_ws/aeva-speed-plot/src/speed_plot/include/speed_plot/getxyzv.hpp
+iostream
+-
+ros/ros.h
+/home/ubuntuurl/catkin_ws/aeva-speed-plot/src/speed_plot/include/speed_plot/ros/ros.h
+sensor_msgs/PointCloud2.h
+/home/ubuntuurl/catkin_ws/aeva-speed-plot/src/speed_plot/include/speed_plot/sensor_msgs/PointCloud2.h
+pcl_conversions/pcl_conversions.h
+-
+bitset
+-
+
 /home/ubuntuurl/catkin_ws/aeva-speed-plot/src/speed_plot/src/getxyzv.cpp
 iostream
 -
@@ -23,8 +35,8 @@ geometry_msgs/Point.h
 /home/ubuntuurl/catkin_ws/aeva-speed-plot/src/speed_plot/src/geometry_msgs/Point.h
 cmath
 -
-bitset
--
+speed_plot/getxyzv.hpp
+/home/ubuntuurl/catkin_ws/aeva-speed-plot/src/speed_plot/src/speed_plot/getxyzv.hpp
 
 /opt/ros/noetic/include/geometry_msgs/Point.h
 string

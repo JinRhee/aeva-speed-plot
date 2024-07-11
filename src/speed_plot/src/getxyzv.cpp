@@ -10,50 +10,10 @@
 #include "std_msgs/Float32.h"
 #include "geometry_msgs/Point.h"
 #include <cmath>
-#include <bitset>
 
-using namespace std;
-
-struct AevaPointXYZIRT
-{
-    PCL_ADD_POINT4D;
-    PCL_ADD_INTENSITY;
-    float reflectivity;
-    float velocity;
-    int32_t time_offset_ns;
-    uint8_t line_index;
-    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-} EIGEN_ALIGN16;
-POINT_CLOUD_REGISTER_POINT_STRUCT (AevaPointXYZIRT,
-    (float, x, x) (float, y, y) (float, z, z) (float, intensity, intensity)
-    (float, reflectivity, reflectivity) (float, velocity, velocity) 
-    (std::int32_t, time_offset_ns, time_offset_ns) (std::uint8_t, line_index, line_index)
-)
+#include "speed_plot/getxyzv.hpp"
 
 ros::Publisher publish_moving;
-
-float bintofloat(int num, const unsigned char* ints)
-{
-    ostringstream stream;
-    string s;
-    uint32_t temp_val;
-    float f;
-
-    for(int i=num-1; i>=0; i--){
-        //cout << i << endl;
-        //cout << (int)(ints[i]) << ' ' << bitset<8>((uint8_t)(ints[i])).to_string() << ' ';
-        stream << bitset<8>((uint8_t)(ints[i])).to_string();        // Convert each 8-bit int to bitstring
-    }
-
-    s = stream.str();                                               // Get string stream as string
-    std::bitset<32> temp (s);                                       // Set bitfield with bitstring
-
-    temp_val = temp.to_ulong();                                     // Read as long int
-    assert(sizeof(temp_val) == sizeof(f));
-    memcpy(&f, &temp_val, sizeof(f));                               // Copy memory and read as float
-    
-    return f;
-}
 
 void pubfloat32(float f)
 {
