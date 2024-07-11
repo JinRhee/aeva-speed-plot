@@ -27,7 +27,7 @@ struct AevaPointXYZIRT
 POINT_CLOUD_REGISTER_POINT_STRUCT (AevaPointXYZIRT,
     (float, x, x) (float, y, y) (float, z, z) (float, intensity, intensity)
     (float, reflectivity, reflectivity) (float, velocity, velocity) 
-    (int32_t, time_offset_ns, time_offset_ns) (uint8_t, line_index, line_index)
+    (std::int32_t, time_offset_ns, time_offset_ns) (std::uint8_t, line_index, line_index)
 )
 
 ros::Publisher publish_moving;
@@ -62,9 +62,8 @@ void pubfloat32(float f)
     publish_moving.publish(msg);
 }
 
-void coutminmax(float nums[])
+void coutminmax(float nums[], int n)
 {
-    int n = sizeof(nums) / sizeof(nums[0]);
     cout << *std::min_element(nums, nums+n) << ' ' << *std::max_element(nums, nums+n);
     float diff = *std::max_element(nums, nums+n) - *std::min_element(nums, nums+n);
     cout << ' ' << diff;
@@ -81,6 +80,8 @@ void readCallback(const sensor_msgs::PointCloud2::ConstPtr& msg)
 
     pcl::PointCloud<AevaPointXYZIRT> pl_orig;
     pcl::fromROSMsg(*msg, pl_orig);
+
+    std::cout<<"velocity : "<<pl_orig.points[0].velocity<<std::endl;
 
 
     int _width = msg->width;                         // Width of data array
@@ -139,10 +140,10 @@ void readCallback(const sensor_msgs::PointCloud2::ConstPtr& msg)
         }
     }
     // Find min and max vels for each row
-    coutminmax(x);
-    coutminmax(y);
-    coutminmax(z);
-    coutminmax(vel);
+    coutminmax(x, _width);
+    coutminmax(y, _width);
+    coutminmax(z, _width);
+    coutminmax(vel, _width);
     cout << endl;
 }
 
