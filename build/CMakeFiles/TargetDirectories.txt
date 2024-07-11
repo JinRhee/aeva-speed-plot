@@ -94,6 +94,7 @@
 /home/ubuntuurl/catkin_ws/aeva-speed-plot/build/speed_plot/CMakeFiles/dynamic_reconfigure_generate_messages_eus.dir
 /home/ubuntuurl/catkin_ws/aeva-speed-plot/build/speed_plot/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir
 /home/ubuntuurl/catkin_ws/aeva-speed-plot/build/speed_plot/CMakeFiles/dynamic_reconfigure_generate_messages_cpp.dir
+/home/ubuntuurl/catkin_ws/aeva-speed-plot/build/speed_plot/CMakeFiles/plothistogram.dir
 /home/ubuntuurl/catkin_ws/aeva-speed-plot/build/speed_plot/CMakeFiles/topic_tools_generate_messages_eus.dir
 /home/ubuntuurl/catkin_ws/aeva-speed-plot/build/speed_plot/CMakeFiles/geometry_msgs_generate_messages_cpp.dir
 /home/ubuntuurl/catkin_ws/aeva-speed-plot/build/speed_plot/CMakeFiles/std_msgs_generate_messages_nodejs.dir

@@ -987,6 +987,19 @@ dynamic_reconfigure_generate_messages_cpp/fast:
 .PHONY : dynamic_reconfigure_generate_messages_cpp/fast
 
 #=============================================================================
+# Target rules for targets named plothistogram
+
+# Build rule for target.
+plothistogram: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 plothistogram
+.PHONY : plothistogram
+
+# fast build rule for target.
+plothistogram/fast:
+	$(MAKE) -f speed_plot/CMakeFiles/plothistogram.dir/build.make speed_plot/CMakeFiles/plothistogram.dir/build
+.PHONY : plothistogram/fast
+
+#=============================================================================
 # Target rules for targets named topic_tools_generate_messages_eus
 
 # Build rule for target.
@@ -1400,6 +1413,7 @@ help:
 	@echo "... dynamic_reconfigure_generate_messages_eus"
 	@echo "... geometry_msgs_generate_messages_nodejs"
 	@echo "... dynamic_reconfigure_generate_messages_cpp"
+	@echo "... plothistogram"
 	@echo "... topic_tools_generate_messages_eus"
 	@echo "... geometry_msgs_generate_messages_cpp"
 	@echo "... std_msgs_generate_messages_nodejs"

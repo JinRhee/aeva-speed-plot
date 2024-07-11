@@ -14,6 +14,7 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   tf
 )
+find_package(PCL 1.8 REQUIRED)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -120,6 +121,7 @@ catkin_package(
 include_directories(
 # include
   ${catkin_INCLUDE_DIRS}
+  ${PCL_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -152,8 +154,11 @@ include_directories(
 #   ${catkin_LIBRARIES}
 # )
 add_executable(getxyzv src/getxyzv.cpp)
-target_link_libraries(getxyzv ${catkin_LIBRARIES})
+target_link_libraries(getxyzv ${catkin_LIBRARIES} ${PCL_LIBRARIES})
 #add_dependencies(getxyzv beginner_tutorials_generate_messages_cpp)
+
+add_executable(plothistogram src/plothistogram.cpp)
+target_link_libraries(plothistogram ${catkin_LIBRARIES})
 
 #############
 ## Install ##

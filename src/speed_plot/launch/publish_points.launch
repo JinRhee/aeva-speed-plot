@@ -1,4 +1,4 @@
 <launch>
-<node type="findzxyzv.cpp" name="findxyzv" pkg="findxyzv"/>
+<node type="findzxyzv.cpp" name="findxyzv" pkg="speed_plot"/>
 <node type="rviz" name="rviz" pkg="rviz" args="-d $(find speed_plot)/rviz/config_file.rviz"/>
 </launch>

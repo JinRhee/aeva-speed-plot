@@ -978,6 +978,21 @@ dynamic_reconfigure_generate_messages_cpp/fast:
 .PHONY : dynamic_reconfigure_generate_messages_cpp/fast
 
 # Convenience name for target.
+speed_plot/CMakeFiles/plothistogram.dir/rule:
+	cd /home/ubuntuurl/catkin_ws/aeva-speed-plot/build && $(MAKE) -f CMakeFiles/Makefile2 speed_plot/CMakeFiles/plothistogram.dir/rule
+.PHONY : speed_plot/CMakeFiles/plothistogram.dir/rule
+
+# Convenience name for target.
+plothistogram: speed_plot/CMakeFiles/plothistogram.dir/rule
+
+.PHONY : plothistogram
+
+# fast build rule for target.
+plothistogram/fast:
+	cd /home/ubuntuurl/catkin_ws/aeva-speed-plot/build && $(MAKE) -f speed_plot/CMakeFiles/plothistogram.dir/build.make speed_plot/CMakeFiles/plothistogram.dir/build
+.PHONY : plothistogram/fast
+
+# Convenience name for target.
 speed_plot/CMakeFiles/topic_tools_generate_messages_eus.dir/rule:
 	cd /home/ubuntuurl/catkin_ws/aeva-speed-plot/build && $(MAKE) -f CMakeFiles/Makefile2 speed_plot/CMakeFiles/topic_tools_generate_messages_eus.dir/rule
 .PHONY : speed_plot/CMakeFiles/topic_tools_generate_messages_eus.dir/rule
@@ -1394,6 +1409,33 @@ src/getxyzv.cpp.s:
 	cd /home/ubuntuurl/catkin_ws/aeva-speed-plot/build && $(MAKE) -f speed_plot/CMakeFiles/getxyzv.dir/build.make speed_plot/CMakeFiles/getxyzv.dir/src/getxyzv.cpp.s
 .PHONY : src/getxyzv.cpp.s
 
+src/plothistogram.o: src/plothistogram.cpp.o
+
+.PHONY : src/plothistogram.o
+
+# target to build an object file
+src/plothistogram.cpp.o:
+	cd /home/ubuntuurl/catkin_ws/aeva-speed-plot/build && $(MAKE) -f speed_plot/CMakeFiles/plothistogram.dir/build.make speed_plot/CMakeFiles/plothistogram.dir/src/plothistogram.cpp.o
+.PHONY : src/plothistogram.cpp.o
+
+src/plothistogram.i: src/plothistogram.cpp.i
+
+.PHONY : src/plothistogram.i
+
+# target to preprocess a source file
+src/plothistogram.cpp.i:
+	cd /home/ubuntuurl/catkin_ws/aeva-speed-plot/build && $(MAKE) -f speed_plot/CMakeFiles/plothistogram.dir/build.make speed_plot/CMakeFiles/plothistogram.dir/src/plothistogram.cpp.i
+.PHONY : src/plothistogram.cpp.i
+
+src/plothistogram.s: src/plothistogram.cpp.s
+
+.PHONY : src/plothistogram.s
+
+# target to generate assembly for a file
+src/plothistogram.cpp.s:
+	cd /home/ubuntuurl/catkin_ws/aeva-speed-plot/build && $(MAKE) -f speed_plot/CMakeFiles/plothistogram.dir/build.make speed_plot/CMakeFiles/plothistogram.dir/src/plothistogram.cpp.s
+.PHONY : src/plothistogram.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -1459,6 +1501,7 @@ help:
 	@echo "... dynamic_reconfigure_generate_messages_eus"
 	@echo "... geometry_msgs_generate_messages_nodejs"
 	@echo "... dynamic_reconfigure_generate_messages_cpp"
+	@echo "... plothistogram"
 	@echo "... topic_tools_generate_messages_eus"
 	@echo "... geometry_msgs_generate_messages_cpp"
 	@echo "... std_msgs_generate_messages_nodejs"
@@ -1490,6 +1533,9 @@ help:
 	@echo "... src/getxyzv.o"
 	@echo "... src/getxyzv.i"
 	@echo "... src/getxyzv.s"
+	@echo "... src/plothistogram.o"
+	@echo "... src/plothistogram.i"
+	@echo "... src/plothistogram.s"
 .PHONY : help
 
 

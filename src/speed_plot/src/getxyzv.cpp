@@ -5,6 +5,7 @@
 #include <iostream>
 #include "ros/ros.h"
 #include "sensor_msgs/PointCloud2.h"
+#include <pcl_conversions/pcl_conversions.h>
 #include "std_msgs/String.h"
 #include "std_msgs/Float32.h"
 #include "geometry_msgs/Point.h"
@@ -12,6 +13,22 @@
 #include <bitset>
 
 using namespace std;
+
+struct AevaPointXYZIRT
+{
+    PCL_ADD_POINT4D;
+    PCL_ADD_INTENSITY;
+    float reflectivity;
+    float velocity;
+    int32_t time_offset_ns;
+    uint8_t line_index;
+    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+} EIGEN_ALIGN16;
+POINT_CLOUD_REGISTER_POINT_STRUCT (AevaPointXYZIRT,
+    (float, x, x) (float, y, y) (float, z, z) (float, intensity, intensity)
+    (float, reflectivity, reflectivity) (float, velocity, velocity) 
+    (int32_t, time_offset_ns, time_offset_ns) (uint8_t, line_index, line_index)
+)
 
 ros::Publisher publish_moving;
 
@@ -45,9 +62,27 @@ void pubfloat32(float f)
     publish_moving.publish(msg);
 }
 
+void coutminmax(float nums[])
+{
+    int n = sizeof(nums) / sizeof(nums[0]);
+    cout << *std::min_element(nums, nums+n) << ' ' << *std::max_element(nums, nums+n);
+    float diff = *std::max_element(nums, nums+n) - *std::min_element(nums, nums+n);
+    cout << ' ' << diff;
+    if (diff == 0){
+        cout << "                ====" << endl;
+    }
+    else{
+        cout << endl;
+    }
+}
 
 void readCallback(const sensor_msgs::PointCloud2::ConstPtr& msg)
 {
+
+    pcl::PointCloud<AevaPointXYZIRT> pl_orig;
+    pcl::fromROSMsg(*msg, pl_orig);
+
+
     int _width = msg->width;                         // Width of data array
     int _height = msg->height;                       // Height of data array
     int _point_step = msg->point_step;               // Length of one point in bytes (= number of entries?)
@@ -73,7 +108,7 @@ void readCallback(const sensor_msgs::PointCloud2::ConstPtr& msg)
     */
 
     // Print out time of scan
-    cout << msg->header.stamp.sec << '.' << msg->header.stamp.nsec << endl;
+    //cout << msg->header.stamp.sec << '.' << msg->header.stamp.nsec << endl;
     nsec = msg->header.stamp.nsec;
     
     // Get offsets
@@ -81,29 +116,34 @@ void readCallback(const sensor_msgs::PointCloud2::ConstPtr& msg)
     x_offset = myvector[0].offset;
     y_offset = myvector[1].offset;
     z_offset = myvector[2].offset;
-    vel_offset = myvector[5].offset;
+    vel_offset = myvector[4].offset;
 
-    // For each row
+    // Allocate data arrays
+    float x[_width];
+    float y[_width];
+    float z[_width];
+    float vel[_width];
+
+    // For each row (scan)
     for(int j = 0; j <_width; j++){
-        
-        // Allocate data arrays
-        float x[_width];
-        float y[_width];
-        float z[_width];
-        float vel[_width];
-
         // Convert to floats
         x[j] = bintofloat(4, &(msg->data[j*_point_step + x_offset]));
         y[j] = bintofloat(4, &(msg->data[j*_point_step + y_offset]));
         z[j] = bintofloat(4, &(msg->data[j*_point_step + z_offset]));
         vel[j] = bintofloat(4, &(msg->data[j*_point_step + vel_offset]));
         pubfloat32(vel[j]);
-        cout << x[j] << ' ' << y[j] << ' ' << z[j] << ' ' << vel[j] << endl;
+        //cout << x[j] << ' ' << y[j] << ' ' << z[j] << ' ' << vel[j] << endl;
 
         if(msg->header.stamp.nsec != nsec){
             cout << "!!!" << msg->header.stamp.sec << '.' << msg->header.stamp.nsec << endl;
         }
     }
+    // Find min and max vels for each row
+    coutminmax(x);
+    coutminmax(y);
+    coutminmax(z);
+    coutminmax(vel);
+    cout << endl;
 }
 
 
