@@ -12,7 +12,7 @@
 #include <cmath>
 #include "speed_plot/getxyzv.hpp"
 
-#define TOGGLE_COUT false
+bool cout_toggle;
 
 ros::Publisher publish_moving;
 
@@ -57,7 +57,7 @@ void readCallback(const sensor_msgs::PointCloud2::ConstPtr& msg)
         pubfloat32(vel[i]);
     }
 
-    if(TOGGLE_COUT){
+    if(cout_toggle){
         // Find min and max vels for each row
         coutminmax(x, _width);
         coutminmax(y, _width);
@@ -67,11 +67,30 @@ void readCallback(const sensor_msgs::PointCloud2::ConstPtr& msg)
     }
 }
 
+template<typename T>
+bool loadParam(ros::NodeHandle nh, const std::string& param_name, T& param_value, const T& default_value, const std::string& prefix="/speed_plot")
+{
+    if(nh.getParam(prefix+'/'+param_name, param_value)){
+        std::cout<<"param '" << prefix << "/" << param_name << "' -> '" << param_value << "'" <<std::endl;
+        return true;
+    }
+    else if(nh.getParam(ros::this_node::getName()+'/'+param_name, param_value)){
+        std::cout<<"param '" << prefix << "/" << param_name << "' -> '" << param_value << "'"<<std::endl;
+        return true;
+    }
+    param_value = default_value;
+    std::cout<<"param '" << prefix << "/" << param_name << "' -> '" << param_value << "'"<< " (default)"<<std::endl;
+    return false;
+}
 
 int main(int argc, char** argv)
 {
     ros::init(argc, argv, "getxyzv");
     ros::NodeHandle nh;
+
+    // Load parameters
+    loadParam(nh, "cout_toggle", cout_toggle, false);
+    
     publish_moving = nh.advertise<std_msgs::Float32>("dynamic/vels", 1000);
     ros::Subscriber sub = nh.subscribe<sensor_msgs::PointCloud2>("aeva/points", 5000, readCallback);
 

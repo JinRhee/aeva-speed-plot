@@ -1,0 +1,12 @@
+# Written by Jin Rhee 12th July 2024
+# Parameter file for aeva 4D lidar speed plotting
+#
+
+speed_plot:
+        cout_toggle: false
+        poolNum: 100000
+        binNum: 50
+        threshold: 0.5
+        histogram_type: 1
+        upper_bound: 7.2
+        lower_bound: 0.0

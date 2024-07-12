@@ -1,4 +1,5 @@
 <launch>
+<rosparam command="load" file="$(find speed_plot)/config/params.yaml"/>
 <node type="getxyzv" name="getxyzv" pkg="speed_plot" output="screen"/>
 <node type="plothistogram" name="plothistogram" pkg="speed_plot" output="screen">
 </node>
