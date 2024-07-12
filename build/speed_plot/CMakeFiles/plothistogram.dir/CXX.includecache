@@ -13,6 +13,8 @@ ros/ros.h
 /home/ubuntuurl/catkin_ws/aeva-speed-plot/src/speed_plot/src/ros/ros.h
 std_msgs/Float32.h
 /home/ubuntuurl/catkin_ws/aeva-speed-plot/src/speed_plot/src/std_msgs/Float32.h
+std_msgs/Int32.h
+/home/ubuntuurl/catkin_ws/aeva-speed-plot/src/speed_plot/src/std_msgs/Int32.h
 boost/histogram.hpp
 -
 boost/format.hpp
@@ -673,6 +675,22 @@ ros/forwards.h
 /opt/ros/noetic/include/rosconsole/macros_generated.h
 
 /opt/ros/noetic/include/std_msgs/Float32.h
+string
+-
+vector
+-
+memory
+-
+ros/types.h
+-
+ros/serialization.h
+-
+ros/builtin_message_traits.h
+-
+ros/message_operations.h
+-
+
+/opt/ros/noetic/include/std_msgs/Int32.h
 string
 -
 vector

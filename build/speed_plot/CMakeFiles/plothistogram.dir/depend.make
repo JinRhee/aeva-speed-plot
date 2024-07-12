@@ -59,6 +59,7 @@ speed_plot/CMakeFiles/plothistogram.dir/src/plothistogram.cpp.o: /opt/ros/noetic
 speed_plot/CMakeFiles/plothistogram.dir/src/plothistogram.cpp.o: /opt/ros/noetic/include/ros/wall_timer_options.h
 speed_plot/CMakeFiles/plothistogram.dir/src/plothistogram.cpp.o: /opt/ros/noetic/include/rosconsole/macros_generated.h
 speed_plot/CMakeFiles/plothistogram.dir/src/plothistogram.cpp.o: /opt/ros/noetic/include/std_msgs/Float32.h
+speed_plot/CMakeFiles/plothistogram.dir/src/plothistogram.cpp.o: /opt/ros/noetic/include/std_msgs/Int32.h
 speed_plot/CMakeFiles/plothistogram.dir/src/plothistogram.cpp.o: /opt/ros/noetic/include/xmlrpcpp/XmlRpcDecl.h
 speed_plot/CMakeFiles/plothistogram.dir/src/plothistogram.cpp.o: /opt/ros/noetic/include/xmlrpcpp/XmlRpcValue.h
 

@@ -10,6 +10,7 @@ project(speed_plot)
 find_package(catkin REQUIRED COMPONENTS
   pcl_ros
   roscpp
+  rospy
   sensor_msgs
   std_msgs
   tf

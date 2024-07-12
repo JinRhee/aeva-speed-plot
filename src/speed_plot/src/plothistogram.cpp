@@ -5,6 +5,7 @@ Written by Jin Rhee 11th July 2024
 #include <iostream>
 #include "ros/ros.h"
 #include "std_msgs/Float32.h"
+#include "std_msgs/Int32.h"
 #include <boost/histogram.hpp>
 #include <boost/format.hpp>
 #include <cassert>
@@ -31,6 +32,7 @@ void plot_histogram(std::vector<float> arr, int arr_num, int bin_num)
 // Plain, boring histogram with auto min-max bounds (histogram_type=0)
 {
     float minmax[2];
+    int count = 0;
     getminmax(arr, arr_num, minmax);
 
     using namespace boost::histogram;
@@ -39,8 +41,9 @@ void plot_histogram(std::vector<float> arr, int arr_num, int bin_num)
         h(arr[i]);
     }
     for(auto&& x : indexed(h, coverage::all)){
-        std::cout<<boost::format("bin %2i [%4.1f, %4.1f): %i\n")
-          % x.index() % x.bin().lower() % x.bin().upper() % *x;
+        count += *x;
+        std::cout<<boost::format("bin %2i [%4.3f, %4.3f): %10i %2.2fp %2.2fp \n")
+          % x.index() % x.bin().lower() % x.bin().upper() % *x % ((*x/arr_num)*100) % (((float)(count)/(float)(arr_num))*100);
     }
     std::cout << std::flush;
 }
@@ -48,14 +51,16 @@ void plot_histogram(std::vector<float> arr, int arr_num, int bin_num)
 void plot_histogram(std::vector<float> arr, int arr_num, int bin_num, float lb, float ub)
 // Set lower and upper bound (histogram_type=1)
 {
+    int count = 0;
     using namespace boost::histogram;
     auto h = make_histogram(axis::regular<>(bin_num, lb, ub));
     for(int i=0; i<arr_num; i++){
         h(arr[i]);
     }
     for(auto&& x : indexed(h, coverage::all)){
-        std::cout<<boost::format("bin %2i [%4.1f, %4.1f): %i\n")
-          % x.index() % x.bin().lower() % x.bin().upper() % *x;
+        count += *x;
+        std::cout<<boost::format("bin %2i [%4.3f, %4.3f): %10i %2.2fp %2.2fp\n")
+          % x.index() % x.bin().lower() % x.bin().upper() % *x % ((*x/arr_num)*100) % (((float)(count)/(float)(arr_num))*100);
     }
     std::cout << std::flush;
 }
