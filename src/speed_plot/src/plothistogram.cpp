@@ -17,6 +17,7 @@ int histogram_type;
 float threshold;
 float upper_bound;
 float lower_bound;
+int use_fringe;
 
 bool plotted = false;
 std::vector<float> pool(1);
@@ -33,6 +34,7 @@ void plot_histogram(std::vector<float> arr, int arr_num, int bin_num)
 {
     float minmax[2];
     int count = 0;
+    int total = 0;
     getminmax(arr, arr_num, minmax);
 
     using namespace boost::histogram;
@@ -40,10 +42,22 @@ void plot_histogram(std::vector<float> arr, int arr_num, int bin_num)
     for(int i=0; i<arr_num; i++){
         h(arr[i]);
     }
-    for(auto&& x : indexed(h, coverage::all)){
-        count += *x;
-        std::cout<<boost::format("bin %2i [%4.3f, %4.3f): %10i %2.2fp %2.2fp \n")
-          % x.index() % x.bin().lower() % x.bin().upper() % *x % ((*x/arr_num)*100) % (((float)(count)/(float)(arr_num))*100);
+    if(use_fringe){
+        for(auto&& x : indexed(h, coverage::all)){
+            count += *x;
+            std::cout<<boost::format("bin %2i [%4.3f, %4.3f): %11i %2.4fp %2.4fp\n")
+            % x.index() % x.bin().lower() % x.bin().upper() % *x % ((*x/arr_num)*100) % (((float)(count)/(float)(arr_num))*100);
+        }
+    }
+    else {
+        for(auto&& x : indexed(h, coverage::inner)){
+            total += *x;
+        }
+        for(auto&& x : indexed(h, coverage::inner)){
+            count += *x;
+            std::cout<<boost::format("bin %2i [%4.3f, %4.3f): %11i %2.4fp %2.4fp\n")
+            % x.index() % x.bin().lower() % x.bin().upper() % *x % ((*x/total)*100) % (((float)(count)/(float)(total))*100);
+        }
     }
     std::cout << std::flush;
 }
@@ -52,15 +66,29 @@ void plot_histogram(std::vector<float> arr, int arr_num, int bin_num, float lb, 
 // Set lower and upper bound (histogram_type=1)
 {
     int count = 0;
+    int total = 0;
+
     using namespace boost::histogram;
     auto h = make_histogram(axis::regular<>(bin_num, lb, ub));
     for(int i=0; i<arr_num; i++){
         h(arr[i]);
     }
-    for(auto&& x : indexed(h, coverage::all)){
-        count += *x;
-        std::cout<<boost::format("bin %2i [%4.3f, %4.3f): %10i %2.2fp %2.2fp\n")
-          % x.index() % x.bin().lower() % x.bin().upper() % *x % ((*x/arr_num)*100) % (((float)(count)/(float)(arr_num))*100);
+    if(use_fringe){
+        for(auto&& x : indexed(h, coverage::all)){
+            count += *x;
+            std::cout<<boost::format("bin %2i [%4.3f, %4.3f): %11i %2.4fp %2.4fp\n")
+            % x.index() % x.bin().lower() % x.bin().upper() % *x % ((*x/arr_num)*100) % (((float)(count)/(float)(arr_num))*100);
+        }
+    }
+    else {
+        for(auto&& x : indexed(h, coverage::inner)){
+            total += *x;
+        }
+        for(auto&& x : indexed(h, coverage::inner)){
+            count += *x;
+            std::cout<<boost::format("bin %2i [%4.3f, %4.3f): %11i %2.4fp %2.4fp\n")
+            % x.index() % x.bin().lower() % x.bin().upper() % *x % ((*x/total)*100) % (((float)(count)/(float)(total))*100);
+        }
     }
     std::cout << std::flush;
 }
@@ -114,6 +142,7 @@ int main(int argc, char** argv)
     loadParam(nh, "threshold", threshold, 0.5f);
     loadParam(nh, "upper_bound", upper_bound, 7.2f);
     loadParam(nh, "lower_bound", lower_bound, 0.0f);
+    loadParam(nh, "use_fringe", use_fringe, 0);
 
     // Resize vector
     pool.resize(poolNum);

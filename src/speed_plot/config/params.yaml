@@ -4,9 +4,10 @@
 
 speed_plot:
         cout_toggle: false
-        poolNum: 50000000
-        binNum: 100
+        poolNum: 60000000
+        binNum: 50
         threshold: 0.5
         histogram_type: 1
-        upper_bound: 0.6
-        lower_bound: 0.0
+        upper_bound: 6.0
+        lower_bound: 0.4
+        use_fringe: 0
